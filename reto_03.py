@@ -18,7 +18,13 @@ plato = ""
 precio = ""
 continuar = ""
 pedido = ""
+
+indice_pedido = 0
 pedido_realizado = {}
+
+precio_pedido = 0
+indice_pagar = 0
+
 
 def introducir_menu():
   global plato
@@ -35,13 +41,20 @@ def mostrar_menu():
 
 def introducir_pedido():
   global pedido
+  global precio_pedido
   global pedido_correcto
+  global indice_pedido
   pedido = input("¿Qué desea tomar?: ")
   
   for key,value in menu.items():
     if value == pedido:
-      pedido_realizado[key] = pedido
-      pedido_correcto = True
+      opcion_plato = key
+      pedido_realizado["Plato"+str(indice_pedido)] = pedido
+      for key,value in precios.items():
+        if opcion_plato == key:
+          pedido_realizado["Precio"+str(indice_pedido)] = value
+          indice_pedido += 1
+          pedido_correcto = True
     if pedido_correcto ==  False:
       print("No tenemos ese plato.")
       introducir_pedido()
@@ -83,5 +96,12 @@ while not fin_pedido:
   elif continuar == "N" or continuar == "n":
     continuar = ""
     print("\n")
-    print(pedido_realizado)
     fin_pedido = True
+
+for key,value in pedido_realizado.items():
+
+  if key == "Precio"+str(indice_pagar):
+    precio_pedido = precio_pedido + int(value)
+    indice_pagar += 1
+
+print("La cuenta asciende a: " + str(precio_pedido) + "€.")
